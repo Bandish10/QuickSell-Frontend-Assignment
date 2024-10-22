@@ -14,9 +14,9 @@ function Grid({
 }) {
   const keys: string[] = useMemo(() => Object.keys(gridData), [gridData]);
 
-  return (
-    <div className="grid">
-      {keys.map((k: string) => (
+  const renderColumn = useCallback(
+    (k: string) => {
+      return (
         <Column
           key={k}
           tickets={gridData[k] as Ticket[]}
@@ -24,9 +24,12 @@ function Grid({
           groupBy={k}
           userIdToData={userIdToData}
         />
-      ))}
-    </div>
+      );
+    },
+    [gridData, grouping, userIdToData]
   );
+
+  return <div className="grid">{keys.map(renderColumn)}</div>;
 }
 
 export default Grid;
